@@ -20,9 +20,13 @@ def gen_time(s):
     l = len(t1)-1
     t2 = t1[:l]
     t3 = t2.split(', ')
-    if len(t2)==2:
+    print(t3)
+    print(len(t3))
+    if len(t3)==2:
+        print(datetime.timedelta(int(t3[0]), int(t3[1]), 0))
         return datetime.timedelta(int(t3[0]), int(t3[1]), 0)
-    if len(t2)==1:
+    if len(t3)==1:
+        print(datetime.timedelta(int(t3[0]), 0, 0))
         return datetime.timedelta(int(t3[0]), 0, 0)
 
 
@@ -46,14 +50,23 @@ class Paste(models.Model):
         (t1year, '1 year'),
     ]
 
+    public = 'public'
+    unlisted = 'unlisted'
+    private = 'private'
+    access_choices = [
+        (public, 'public'),
+        (unlisted, 'unlisted'),
+        (private, 'private'),
+    ]
+
     slug = models.SlugField(max_length=8, unique=True)
-    title = models.CharField(max_length=150, db_index=True)
+    title = models.CharField(max_length=150, db_index=True, default='unknow')
     body = models.TextField(db_index=True)
     author = models.CharField(max_length=150, db_index=True)
     life_time = models.CharField(max_length=100, choices=times, default=datetime.timedelta(0))
     create_time = models.DateTimeField(auto_now_add=True)
     die_time = models.DateTimeField(null=True)
-    access = models.CharField(max_length=50)
+    access = models.CharField(max_length=50, choices=access_choices, default='public')
 
     def __str__(self):
         return self.title

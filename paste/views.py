@@ -11,16 +11,16 @@ import datetime
 from .models import *
 from .forms import *
 
-# pasteslist служит для списка паст для постоянного отображения на сайте 
+# pasteslist служит для списка паст для постоянного отображения на сайте
 # Create your views here.
 
 def pasteslist_get():  #список паст для постоянного отображения на сайте
-    return Paste.objects.filter(Q(die_time__gt=datetime.datetime.now()) | Q(die_time__isnull=True))[:5]
+    return Paste.objects.filter(Q(die_time__gt=datetime.datetime.now()) | Q(die_time__isnull=True), Q(access='public'))[:5]
 
 
 def paste_list(request):  # вьюха для просмотра всех доступных паст
-    lenpaste = Paste.objects.filter(Q(die_time__gt=datetime.datetime.now()) | Q(die_time__isnull=True)).count()  # количество паст
     pastes = Paste.objects.filter(Q(die_time__gt=datetime.datetime.now()) | Q(die_time__isnull=True))
+    lenpaste = pastes.count()  # количество паст
     pasteslist = pasteslist_get()
     context = {
         'pasteslist': pasteslist,
@@ -53,7 +53,7 @@ class PasteCreate(View):  # вьюха для создания новой пас
         return render(request, 'paste/paste_create.html', context=context)
 
 
-class PasteDetail(View):  # вьюха для просмотра отдельно каждой вьюхи
+class PasteDetail(View):  # вьюха для просмотра отдельно каждой пасты
     def get(self, request, slug):
         paste = get_object_or_404(Paste, slug__iexact=slug)
         pasteslist = pasteslist_get()
@@ -63,8 +63,13 @@ class PasteDetail(View):  # вьюха для просмотра отдельн�
             # 'admin_paste': paste,
             # 'detail': True
         }
-        return render(request, 'paste/paste_detail.html', context=context)
-
+        if not(paste.die_time):
+            return render(request, 'paste/paste_detail.html', context=context)
+        else:
+            if paste.die_time<datetime.datetime.now():
+                return render(request, 'paste/paste_non_paste_detail.html', context=context)
+            else:
+                return render(request, 'paste/paste_detail.html', context=context)
 
 class PasteDelete(View):  # вьюха для удаления пасты
     def get(self, request, slug):
