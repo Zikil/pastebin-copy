@@ -1,0 +1,23 @@
+{% extends 'paste/paste_base.html' %}
+  {% block title %}
+    {% if paste.die_time %}
+      {{ paste.title }} - {{ block.super }}
+    {% else %}
+      non paste - {{ block.super }}
+    {% endif %}
+  {% endblock %}
+
+  {% block content %}
+    {% if paste.die_time %}
+      <h1 class="mb-5">
+        {{ paste.title }}
+      </h1>
+      <p>
+        {{ paste.body }}
+      </p>
+    {% else %}
+      <h1 class="mb-5">
+        non paste
+      </h1>
+    {% endif %}
+  {% endblock %}

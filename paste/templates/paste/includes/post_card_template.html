@@ -1,0 +1,16 @@
+<div class="card mb-4">
+  <div class="card-header">
+    {{ paste.create_time }}
+  </div>
+  <div class="card-body">
+    <h5 class="card-title">{{ paste.title }}</h5>
+    <p class="card-text">{{ paste.body|truncatewords:15 }}</p>
+    <a href="{{ paste.get_absolute_url }}" class="btn btn-light">Read</a>
+  </div>
+  <div class="card-footer text-muted">
+    Create {{ paste.create_time|timeuntil }} ago
+    <a href="{{ paste.get_delete_url }}" class="btn btn-danger float-right">Delete</a>
+  </div>
+</div>
+
+<!-- <a href="{{ paste.get_absolute_url }}" class="btn btn-light">Read</a> -->

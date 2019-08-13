@@ -1,0 +1,18 @@
+{% extends 'paste/paste_base.html' %}
+
+{% block title %}
+  Delete paste "{{ paste.title|title }}" - {{ block.super }}
+{% endblock %}
+
+{% block content %}
+  <form action="{{ paste.get_delete_url }}" method="post">
+    {% csrf_token %}
+
+    <h1>Are you sure you want to delete <b>"{{ paste.title|title }}"</b> paste?</h1>
+
+    <a href="{{ paste.get_absolute_url }}" class="btn btn-primary">Cancel</a>
+    <button type="submit" class="btn btn-danger">Delete paste</button>
+  </form>
+
+
+{% endblock %}
