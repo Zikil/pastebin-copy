@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from django.shortcuts import redirect
 from django.views.generic import View
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 from django.shortcuts import get_object_or_404
 from django.db.models import Q
@@ -20,9 +21,18 @@ def pasteslist_get():  #список паст для постоянного от
 
 def paste_list(request):  # вьюха для просмотра всех доступных паст
     pastes = Paste.objects.filter(Q(die_time__gt=datetime.datetime.now()) | Q(die_time__isnull=True))
+
+    search_query = request.GET.get('search', '')
+    if search_query:
+        pastes = pastes.filter(Q(title__icontains=search_query) | Q(body__icontains=search_query))
+    else:
+        pastes = pastes.all()
+
+
     lenpaste = pastes.count()  # количество паст
     pasteslist = pasteslist_get()
     context = {
+        'search_query': search_query,
         'pasteslist': pasteslist,
         'pastes': pastes,
         'lenpaste': lenpaste
@@ -70,6 +80,7 @@ class PasteDetail(View):  # вьюха для просмотра отдельн�
                 return render(request, 'paste/paste_non_paste_detail.html', context=context)
             else:
                 return render(request, 'paste/paste_detail.html', context=context)
+
 
 class PasteDelete(View):  # вьюха для удаления пасты
     def get(self, request, slug):

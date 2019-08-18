@@ -20,10 +20,7 @@ def gen_time(s):
     l = len(t1)-1
     t2 = t1[:l]
     t3 = t2.split(', ')
-    print(t3)
-    print(len(t3))
     if len(t3)==2:
-        print(datetime.timedelta(int(t3[0]), int(t3[1]), 0))
         return datetime.timedelta(int(t3[0]), int(t3[1]), 0)
     if len(t3)==1:
         print(datetime.timedelta(int(t3[0]), 0, 0))
@@ -60,7 +57,7 @@ class Paste(models.Model):
     ]
 
     slug = models.SlugField(max_length=8, unique=True)
-    title = models.CharField(max_length=150, db_index=True, default='unknow')
+    title = models.CharField(max_length=150, db_index=True, blank=True)
     body = models.TextField(db_index=True)
     author = models.CharField(max_length=150, db_index=True)
     life_time = models.CharField(max_length=100, choices=times, default=datetime.timedelta(0))
@@ -80,6 +77,18 @@ class Paste(models.Model):
     def save(self, *args, **kwargs):
         if not self.id:
             self.slug = gen_slug(datetime.datetime.now())
+            # if request.user.is_authenticated:
+            #     pass
+            # else:
+            print(dir(kwargs))
+            print()
+            print(dir(args))
+            print()
+            print(dir(self))
+            print()
+            self.author = 'guest'
+            if not self.title:
+                self.title = 'untitled'
             if self.life_time!='datetime.timedelta(0)':
                 self.die_time = datetime.datetime.now() + gen_time(self.life_time)
         super().save(*args, **kwargs)
