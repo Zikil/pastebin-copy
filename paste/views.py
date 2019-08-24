@@ -53,13 +53,18 @@ class PasteCreate(View):  # вьюха для создания новой пас
     def post(self, request):
         bound_form = PasteForm(request.POST)
         if bound_form.is_valid():
+            print(dir(bound_form))
             new_paste = bound_form.save()
+            if request.user.is_authenticated:
+                new_paste.user = request.user
+                new_paste.save()
             return redirect(new_paste)
         pasteslist = pasteslist_get()
         context = {
             'pasteslist': pasteslist,
             'form': bound_form
         }
+
         return render(request, 'paste/paste_create.html', context=context)
 
 

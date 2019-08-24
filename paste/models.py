@@ -1,6 +1,7 @@
 from django.db import models
 from django.shortcuts import reverse
-
+from django.contrib.auth.models import User
+from django.contrib.auth import get_user_model
 
 from datetime import datetime
 import datetime
@@ -56,14 +57,16 @@ class Paste(models.Model):
         (private, 'private'),
     ]
 
-    slug = models.SlugField(max_length=8, unique=True)
+    slug = models.SlugField(max_length=10, unique=True)
     title = models.CharField(max_length=150, db_index=True, blank=True)
     body = models.TextField(db_index=True)
-    author = models.CharField(max_length=150, db_index=True)
+    author = models.CharField(max_length=150, db_index=True, blank=True)
     life_time = models.CharField(max_length=100, choices=times, default=datetime.timedelta(0))
     create_time = models.DateTimeField(auto_now_add=True)
-    die_time = models.DateTimeField(null=True)
+    die_time = models.DateTimeField(null=True, blank=True)
     access = models.CharField(max_length=50, choices=access_choices, default='public')
+    user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE, null=True)
+
 
     def __str__(self):
         return self.title
@@ -77,16 +80,6 @@ class Paste(models.Model):
     def save(self, *args, **kwargs):
         if not self.id:
             self.slug = gen_slug(datetime.datetime.now())
-            # if request.user.is_authenticated:
-            #     pass
-            # else:
-            print(dir(kwargs))
-            print()
-            print(dir(args))
-            print()
-            print(dir(self))
-            print()
-            self.author = 'guest'
             if not self.title:
                 self.title = 'untitled'
             if self.life_time!='datetime.timedelta(0)':

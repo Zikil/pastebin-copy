@@ -6,7 +6,7 @@ from .models import Paste
 #admin.site.register(Paste)
 # Define the admin class
 class PasteAdmin(admin.ModelAdmin):
-    list_display = ('title', 'body', 'slug', 'author', 'create_time', 'life_time', 'die_time', 'access')
+    list_display = ('title', 'body', 'slug', 'author', 'create_time', 'life_time', 'die_time', 'access', 'user')
 
 
 # Register the admin class with the associated model
