@@ -9,8 +9,8 @@
   </div>
   <div class="card-footer text-muted">
     Create {{ paste.create_time|timeuntil }} ago
-    {% if request.user.is_authenticated and request.user.is_staff %}
-      <a href="{{ paste.get_delete_url }}" class="btn btn-danger float-right">Delete</a>
+    {% if request.user.is_authenticated and request.user.is_staff or request.user == paste.user %}
+      <a href="{{ paste.get_delete_url }}" class="btn btn-outline-danger float-right">Delete</a>
     {% endif %}
   </div>
 </div>

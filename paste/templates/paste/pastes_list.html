@@ -4,12 +4,17 @@
 {% endblock %}
 
 {% block content %}
-<h1 class="mb-5">{% if search_query %}Search: {{ search_query }}({{ lenpaste }}){% else %}All pastes({{ lenpaste }}):{% endif %}</h1>
-<div class="row">
-  {% for paste in pastes %}
-    <div class="col-6">
-      {% include 'paste/includes/post_card_template.html' %}
-    </div>
-  {% endfor %}
-</div>
+  <h1 class="mb-5">{% if search_query %}Search: {{ search_query }}({{ lenpaste }}){% else %}All public pastes({{ lenpaste }}):{% endif %}</h1>
+  <div class="row">
+    {% for paste in page_object.object_list %}
+      <div class="col-6">
+        {% include 'paste/includes/post_card_template.html' %}
+      </div>
+    {% endfor %}
+  </div>
+
+
+
+
+
 {% endblock %}

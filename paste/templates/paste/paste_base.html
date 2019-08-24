@@ -4,24 +4,25 @@
   {% block admin-panel %}
     <a href="/admin" class="btn btn-outline-info">Admin</a>
     <div class="btn-group">
-      <button type="button" class="btn btn-light dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+      <!-- <button type="button" class="btn btn-light dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
         Create
       </button>
       <div class="dropdown-menu">
         <a class="dropdown-item" href="{% url 'paste_create_url' %}">Post</a>
-      </div>
+
+      </div> -->
     </div>
   {% endblock %}
 
   {% block content1 %}
     <div class="row">
-      <div class="col-8 tx-1">
+      <div class="col-9 tx-1">
         {% block content %}
         Welcome
         {% endblock %}
       </div>
-      <div class="col-4">
-        <h1 class="mb-5">Last public pastes:</h1>
+      <div class="col-3">
+        <h3 class="mb-5">Last public pastes:</h3>
         {% for paste in pasteslist %}
         <div class="card m-2">
           <div class="card-body">
