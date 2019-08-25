@@ -1,0 +1,15 @@
+{% extends 'paste/paste_base.html' %}
+{% block title %}
+  Paste list - {{ block.super }}
+{% endblock %}
+
+{% block content %}
+<h1 class="mb-5">My pastes({{ lenpaste }}):</h1>
+<div class="row">
+  {% for paste in pastes %}
+    <div class="col-6">
+      {% include 'paste/includes/post_card_template.html' %}
+    </div>
+  {% endfor %}
+</div>
+{% endblock %}

@@ -1,11 +1,20 @@
 {% extends 'paste/paste_base.html' %}
 {% block title %}
-  Paste list
+  Paste list - {{ block.super }}
 {% endblock %}
 
 {% block content %}
-  <h1 class="mb-5">Pastes({{ lenpaste }}):</h1>
-  {% for paste in pastes %}
-      {% include 'paste/includes/post_card_template.html' %}
-  {% endfor %}
+  <h1 class="mb-5">{% if search_query %}Search: {{ search_query }}({{ lenpaste }}){% else %}All public pastes({{ lenpaste }}):{% endif %}</h1>
+  <div class="row">
+    {% for paste in page_object.object_list %}
+      <div class="col-6">
+        {% include 'paste/includes/post_card_template.html' %}
+      </div>
+    {% endfor %}
+  </div>
+
+
+
+
+
 {% endblock %}
