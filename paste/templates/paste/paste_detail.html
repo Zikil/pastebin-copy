@@ -1,23 +1,20 @@
 {% extends 'paste/paste_base.html' %}
   {% block title %}
-    {% if paste.die_time %}
       {{ paste.title }} - {{ block.super }}
-    {% else %}
-      non paste - {{ block.super }}
-    {% endif %}
   {% endblock %}
 
   {% block content %}
-    {% if paste.die_time %}
+    <div class="">
       <h1 class="mb-5">
         {{ paste.title }}
       </h1>
-      <p>
-        {{ paste.body }}
-      </p>
-    {% else %}
-      <h1 class="mb-5">
-        non paste
-      </h1>
-    {% endif %}
+        <p>
+          {{ paste.body }}
+        </p>
+    </div>
+      {% if paste.user %}
+        <p class="text-muted float-right">
+          Author: {{ paste.user.get_username }}
+        </p>
+      {% endif %}
   {% endblock %}
